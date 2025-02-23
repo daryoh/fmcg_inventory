@@ -2,22 +2,25 @@
 
 A simple nestjs api for FMCG.
 
-
 ## Getting Started
 
 ### Prerequisites
+
 - Install NodeJS (v16+) and **Yarn** or **npm**
 - Install **PostgreSQL** (or ensure SQLite is used for testing)
 
 ### Environment Setup
+
 - Use the `.env.example` file to setup your environmental variables
   - Setup the root [`.env`](./.env) file. `cp .env.example .env`
 - This projects requires two `.env` files, one for test `.env.test` and the other for development `.env`
 
 ### Install dependencies
+
 - Run `npm install` or `yarn install` to install all dependencies
 
 ### Running the Server
+
 - Run `yarn run start:dev` to start the server locally
 - Run `yarn run start` to start the server after build
 - Interact with localhost:[PORT] in POSTMAN to access the application
@@ -37,10 +40,12 @@ A simple nestjs api for FMCG.
 ## Features
 
 ### Authentication
+
 - Register User: `POST /v1/auth/register`
 - Login User: `POST /v1/auth/login`
 
 ### Product Management
+
 - Create Product: `POST /v1/products`
 - Delete a Product: `DELETE /v1/products/:id`
 - Edit a Product: `PUT /v1/products/:id`
@@ -52,8 +57,8 @@ A simple nestjs api for FMCG.
 - Decision: I used PostgreSQL for a production-ready setup with better scalability.
 - Trade-off: Requires more setup than SQLite, but supports advanced features like indexing and transactions.
 
-- Decision: Using SQLite for Testing
-  - Reasoning: I chose SQLite for testing because it provides a lightweight, in-memory database, making tests faster and isolated without requiring a full PostgreSQL instance.
+- Decision: Using PostgresSQL instead of SQLite for Testing
+  - Reasoning: I wanted to use SQLite for testing because it provides a lightweight, in-memory database, making tests faster and isolated without requiring a full PostgreSQL instance. However, I experienced installation issues with SQLite on my machine.
 - Trade-off:
   - Issue: Some PostgreSQL-specific constraints (like unique constraints) behave differently in SQLite.
   - Example: I relied on database duplicate errors (error code 23505 in PostgreSQL), but SQLite throws a different error format for unique constraint violations.
@@ -62,11 +67,11 @@ A simple nestjs api for FMCG.
 ## Challenges Faced & Resolutions
 
 1. Challenge: Setting Up Database Config for Tests
-    - Issue: Needed separate test and dev databases.
-    - Solution: Used `ConfigModule.forRoot()` to load .env.test when `NODE_ENV=test`.
+   - Issue: Needed separate test and dev databases.
+   - Solution: Used `ConfigModule.forRoot()` to load .env.test when `NODE_ENV=test`.
 2. Challenge: Ensuring Clean Database for Tests
    - Issue: Tests could fail due to leftover data.
-   - Solution: I used `dataSource.synchronize(true)` in `beforeEach()` to reset the database before each test.
+   - Solution: I deleted records from the database using ` await userRepository.delete({})` in `afterAll()` to reset the database before each test.
 
 ## License
 
